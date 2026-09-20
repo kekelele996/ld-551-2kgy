@@ -41,6 +41,7 @@ class CourseResponse(CourseBase):
     total_duration: int
     status: CourseStatus
     rating: float
+    review_count: int = 0
     student_count: int
     created_at: datetime
     updated_at: datetime

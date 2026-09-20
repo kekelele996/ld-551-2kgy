@@ -1,12 +1,13 @@
 INSERT INTO users (id, email, name, hashed_password, role, bio) VALUES
   (1, 'admin@eduflow.example.com', '平台管理员', '$2a$12$uXW/0qc.ZntzytbhEbVTmeZcnwlQugDgbcig.FUyhnoNRCrtGXLHC', 'ADMIN', '负责课程审核与平台运营'),
   (2, 'instructor@eduflow.example.com', '林老师', '$2a$12$uXW/0qc.ZntzytbhEbVTmeZcnwlQugDgbcig.FUyhnoNRCrtGXLHC', 'INSTRUCTOR', '十年全栈开发与教学经验'),
-  (3, 'student@eduflow.example.com', '体验学员', '$2a$12$uXW/0qc.ZntzytbhEbVTmeZcnwlQugDgbcig.FUyhnoNRCrtGXLHC', 'STUDENT', '正在学习 Vue 与 FastAPI')
+  (3, 'student@eduflow.example.com', '体验学员', '$2a$12$uXW/0qc.ZntzytbhEbVTmeZcnwlQugDgbcig.FUyhnoNRCrtGXLHC', 'STUDENT', '正在学习 Vue 与 FastAPI'),
+  (4, 'graduate@eduflow.example.com', '结业学员', '$2a$12$uXW/0qc.ZntzytbhEbVTmeZcnwlQugDgbcig.FUyhnoNRCrtGXLHC', 'STUDENT', '已结业，欢迎交流学习心得')
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO courses (id, title, description, instructor_id, category, level, price, cover_image, total_lessons, total_duration, status, rating, student_count) VALUES
-  (1, 'Vue 3 企业项目实战', '从组合式 API 到权限、支付与部署的完整课程。', 2, '编程', 'INTERMEDIATE', 199.00, 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3', 3, 95, 'PUBLISHED', 4.8, 1),
-  (2, '产品设计入门', '面向零基础学员的设计思维与原型工作流。', 2, '设计', 'BEGINNER', 0.00, 'https://images.unsplash.com/photo-1518005020951-eccb494ad742', 2, 50, 'PUBLISHED', 4.6, 0)
+INSERT INTO courses (id, title, description, instructor_id, category, level, price, cover_image, total_lessons, total_duration, status, rating, review_count, student_count) VALUES
+  (1, 'Vue 3 企业项目实战', '从组合式 API 到权限、支付与部署的完整课程。', 2, '编程', 'INTERMEDIATE', 199.00, 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3', 3, 95, 'PUBLISHED', 5.0, 1, 2),
+  (2, '产品设计入门', '面向零基础学员的设计思维与原型工作流。', 2, '设计', 'BEGINNER', 0.00, 'https://images.unsplash.com/photo-1518005020951-eccb494ad742', 2, 50, 'PUBLISHED', 0, 0, 0)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO chapters (id, course_id, title, sort_order) VALUES
@@ -23,11 +24,21 @@ INSERT INTO lessons (id, chapter_id, title, type, content, duration, is_free, so
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO enrollments (id, user_id, course_id, progress) VALUES
-  (1, 3, 1, 33.33)
+  (1, 3, 1, 100),
+  (2, 4, 1, 100)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO lesson_progress (id, enrollment_id, lesson_id, score) VALUES
-  (1, 1, 1, NULL)
+  (1, 1, 1, NULL),
+  (2, 1, 2, NULL),
+  (3, 1, 3, 90),
+  (4, 2, 1, NULL),
+  (5, 2, 2, NULL),
+  (6, 2, 3, 95)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO course_reviews (id, course_id, user_id, rating, content) VALUES
+  (1, 1, 4, 5, '课程结构清晰，从组合式 API 到权限、支付与部署都有覆盖，讲师答疑也很及时，强烈推荐！')
 ON CONFLICT (id) DO NOTHING;
 
 SELECT setval('users_id_seq', 10, true);
@@ -36,3 +47,4 @@ SELECT setval('chapters_id_seq', 10, true);
 SELECT setval('lessons_id_seq', 10, true);
 SELECT setval('enrollments_id_seq', 10, true);
 SELECT setval('lesson_progress_id_seq', 10, true);
+SELECT setval('course_reviews_id_seq', 10, true);

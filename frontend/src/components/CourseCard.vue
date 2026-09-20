@@ -12,7 +12,10 @@
       <div class="meta">
         <span>{{ course.instructor?.name || '讲师' }}</span>
         <span>{{ course.total_lessons }} 课时</span>
-        <span>评分 {{ course.rating.toFixed(1) }}</span>
+        <span class="rating">
+          <StarRating :rating="course.rating" size="small" :show-score="true" />
+          {{ course.review_count }} 人评价
+        </span>
       </div>
       <ProgressIndicator v-if="progress !== undefined" :percentage="progress" compact />
       <div class="footer">
@@ -28,6 +31,7 @@ import { courseLevelLabel, courseStatusLabel } from '@/constants/enums'
 import type { Course } from '@/types/course'
 import { formatMoney } from '@/utils/format'
 import ProgressIndicator from '@/components/ProgressIndicator.vue'
+import StarRating from '@/components/StarRating.vue'
 
 defineProps<{
   course: Course

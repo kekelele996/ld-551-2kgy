@@ -47,5 +47,16 @@ export const useCourseStore = defineStore('course', () => {
     return request.patch<unknown, Course>(`/courses/${courseId}/status`, { status })
   }
 
-  return { courses, currentCourse, chapters, total, loading, fetchCourses, fetchCourse, fetchChapters, createCourse, updateStatus }
+  // 评价提交后，用后端返回的最新课程数据同步详情与列表缓存（平均分、评价人数立即更新）
+  function applyCourseUpdate(course: Course) {
+    if (currentCourse.value?.id === course.id) {
+      currentCourse.value = { ...currentCourse.value, ...course }
+    }
+    const index = courses.value.findIndex((item) => item.id === course.id)
+    if (index !== -1) {
+      courses.value[index] = { ...courses.value[index], ...course }
+    }
+  }
+
+  return { courses, currentCourse, chapters, total, loading, fetchCourses, fetchCourse, fetchChapters, createCourse, updateStatus, applyCourseUpdate }
 })

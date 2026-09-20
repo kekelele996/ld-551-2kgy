@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1 import auth, courses, enrollments, instructor, lessons, orders
+from app.api.v1 import auth, courses, enrollments, instructor, lessons, orders, reviews
 from app.core.config import settings
 from app.core.database import Base, engine
 from app.middleware.audit_log import AuditLogMiddleware
@@ -36,4 +36,5 @@ app.include_router(courses.router, prefix="/api")
 app.include_router(lessons.router, prefix="/api")
 app.include_router(enrollments.router, prefix="/api")
 app.include_router(orders.router, prefix="/api")
+app.include_router(reviews.router, prefix="/api")
 app.include_router(instructor.router, prefix="/api")

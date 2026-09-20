@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS courses (
   total_duration INTEGER NOT NULL DEFAULT 0,
   status course_status NOT NULL DEFAULT 'DRAFT',
   rating DOUBLE PRECISION NOT NULL DEFAULT 0,
+  review_count INTEGER NOT NULL DEFAULT 0,
   student_count INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -81,6 +82,17 @@ CREATE TABLE IF NOT EXISTS orders (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS course_reviews (
+  id SERIAL PRIMARY KEY,
+  course_id INTEGER NOT NULL REFERENCES courses(id),
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  rating SMALLINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  content VARCHAR(500) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CONSTRAINT uq_review_user_course UNIQUE (user_id, course_id)
+);
+
 CREATE TABLE IF NOT EXISTS audit_logs (
   id SERIAL PRIMARY KEY,
   user_id INTEGER,
@@ -96,3 +108,4 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 CREATE INDEX IF NOT EXISTS idx_courses_public_search ON courses(status, category, level, created_at);
 CREATE INDEX IF NOT EXISTS idx_lessons_chapter ON lessons(chapter_id, sort_order);
 CREATE INDEX IF NOT EXISTS idx_orders_user_status ON orders(user_id, status);
+CREATE INDEX IF NOT EXISTS idx_reviews_course_updated ON course_reviews(course_id, updated_at DESC);

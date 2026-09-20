@@ -16,6 +16,7 @@ export interface Course {
   total_duration: number
   status: CourseStatus
   rating: number
+  review_count: number
   student_count: number
   created_at: string
   updated_at: string

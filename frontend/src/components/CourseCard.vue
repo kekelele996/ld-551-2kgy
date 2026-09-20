@@ -12,7 +12,7 @@
       <div class="meta">
         <span>{{ course.instructor?.name || '讲师' }}</span>
         <span>{{ course.total_lessons }} 课时</span>
-        <span>评分 {{ course.rating.toFixed(1) }}</span>
+        <span>评分 {{ course.rating.toFixed(1) }}（{{ course.review_count }} 条评价）</span>
       </div>
       <ProgressIndicator v-if="progress !== undefined" :percentage="progress" compact />
       <div class="footer">

@@ -4,9 +4,9 @@ INSERT INTO users (id, email, name, hashed_password, role, bio) VALUES
   (3, 'student@eduflow.example.com', '体验学员', '$2a$12$uXW/0qc.ZntzytbhEbVTmeZcnwlQugDgbcig.FUyhnoNRCrtGXLHC', 'STUDENT', '正在学习 Vue 与 FastAPI')
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO courses (id, title, description, instructor_id, category, level, price, cover_image, total_lessons, total_duration, status, rating, student_count) VALUES
-  (1, 'Vue 3 企业项目实战', '从组合式 API 到权限、支付与部署的完整课程。', 2, '编程', 'INTERMEDIATE', 199.00, 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3', 3, 95, 'PUBLISHED', 4.8, 1),
-  (2, '产品设计入门', '面向零基础学员的设计思维与原型工作流。', 2, '设计', 'BEGINNER', 0.00, 'https://images.unsplash.com/photo-1518005020951-eccb494ad742', 2, 50, 'PUBLISHED', 4.6, 0)
+INSERT INTO courses (id, title, description, instructor_id, category, level, price, cover_image, total_lessons, total_duration, status, rating, review_count, student_count) VALUES
+  (1, 'Vue 3 企业项目实战', '从组合式 API 到权限、支付与部署的完整课程。', 2, '编程', 'INTERMEDIATE', 199.00, 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3', 3, 95, 'PUBLISHED', 4.8, 0, 1),
+  (2, '产品设计入门', '面向零基础学员的设计思维与原型工作流。', 2, '设计', 'BEGINNER', 0.00, 'https://images.unsplash.com/photo-1518005020951-eccb494ad742', 2, 50, 'PUBLISHED', 5.0, 1, 1)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO chapters (id, course_id, title, sort_order) VALUES
@@ -23,11 +23,17 @@ INSERT INTO lessons (id, chapter_id, title, type, content, duration, is_free, so
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO enrollments (id, user_id, course_id, progress) VALUES
-  (1, 3, 1, 33.33)
+  (1, 3, 1, 33.33),
+  (2, 3, 2, 100)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO lesson_progress (id, enrollment_id, lesson_id, score) VALUES
-  (1, 1, 1, NULL)
+  (1, 1, 1, NULL),
+  (2, 2, 4, NULL)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO course_reviews (id, course_id, user_id, rating, content) VALUES
+  (1, 2, 3, 5, '内容清晰易懂，零基础也能跟上，推荐！')
 ON CONFLICT (id) DO NOTHING;
 
 SELECT setval('users_id_seq', 10, true);
@@ -36,3 +42,4 @@ SELECT setval('chapters_id_seq', 10, true);
 SELECT setval('lessons_id_seq', 10, true);
 SELECT setval('enrollments_id_seq', 10, true);
 SELECT setval('lesson_progress_id_seq', 10, true);
+SELECT setval('course_reviews_id_seq', 10, true);

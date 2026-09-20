@@ -5,12 +5,14 @@ from app.models.enrollment import Enrollment
 from app.models.lesson import Lesson
 from app.models.order import Order
 from app.models.progress import LessonProgress
+from app.models.review import CourseReview
 from app.models.user import User
 
 __all__ = [
     "AuditLog",
     "Chapter",
     "Course",
+    "CourseReview",
     "Enrollment",
     "Lesson",
     "Order",
